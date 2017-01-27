@@ -15,7 +15,7 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
-    # TODO: put package requirements here
+    'requests', 'requests_mock', 'six'
 ]
 
 test_requirements = [
@@ -31,28 +31,33 @@ setup(
     author_email='anthonyshaw@apache.org',
     url='https://github.com/tonybaloney/requests-staticmock',
     packages=[
-        'requests-staticmock',
+        'requests_staticmock',
     ],
-    package_dir={'requests-staticmock':
-                 'requests-staticmock'},
+    package_dir={'requests_staticmock':
+                 'requests_staticmock'},
     include_package_data=True,
     install_requires=requirements,
-    license="ISCL",
+    license="Apache License (2.0)",
     zip_safe=False,
-    keywords='requests-staticmock',
-    classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+    keywords='requests_staticmock',
+     classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Environment :: Console',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: ISC License (ISCL)',
-        'Natural Language :: English',
-        "Programming Language :: Python :: 2",
+        'Intended Audience :: System Administrators',
+        'License :: OSI Approved :: Apache Software License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Topic :: Software Development :: Libraries :: Python Modules',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
-    ],
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: Implementation :: CPython',
+        'Programming Language :: Python :: Implementation :: PyPy'],
     test_suite='nose2.collector.collector',
     tests_require=test_requirements
 )

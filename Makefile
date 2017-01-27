@@ -46,7 +46,7 @@ clean-test:
 	rm -fr htmlcov/
 
 lint:
-	flake8 requests-staticmock tests
+	flake8 requests_staticmock tests
 
 test:
 	python setup.py test
@@ -55,7 +55,7 @@ test-all:
 	tox
 
 coverage:
-	coverage run --source requests-staticmock setup.py test
+	coverage run --source requests_staticmock setup.py test
 	coverage report -m
 	coverage html
 	$(BROWSER) htmlcov/index.html
