@@ -25,8 +25,11 @@ BASE_PATH = os.getcwd()
 
 
 class Adapter(BaseAdapter):
-    def __init__(self):
-        self.paths = []
+    def __init__(self, base_path=None):
+        if base_path:
+            self.paths = [base_path]
+        else:
+            self.paths = []
         self._http_adapter = HTTPAdapter()
 
     def send(self, request, **kwargs):

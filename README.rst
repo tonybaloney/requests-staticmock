@@ -21,6 +21,41 @@ A static HTTP mock interface for requests
 * Free software: Apache 2 License
 * Documentation: https://requests-staticmock.readthedocs.org.
 
+Usage
+-----
+
+As a context manager for requests Session instances
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The `requests_staticmock`
+
+.. code-block:: python
+
+    import requests
+    import requests_staticmock
+    
+    session = requests.Session()
+    with requests_staticmock.mock_session_with_fixtures(session, 'tests/fixtures', 'http://test_context.com'):
+        # will return a response object with the contents of tests/fixtures/test.json
+        response = new_session.request('get', 'http://test_context.com/test.json')
+
+As an adapter
+~~~~~~~~~~~~~
+
+You can inject the `requests_staticmock` adapter into an existing (or new) requests session to mock out a particular URL
+or domain, e.g.
+
+.. code-block:: python
+
+    import requests
+    from requests_staticmock import Adapter
+    
+    session = requests.Session()
+    special_adapter = Adapter('fixtures')
+    session.mount('http://specialwebsite.com', special_adapter)
+    session.request('http://normal.com/api/example') # works as normal
+    session.request('http://specialwebsite.com') # returns static mocks
+
 Features
 --------
 
