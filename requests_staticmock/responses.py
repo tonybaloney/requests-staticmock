@@ -17,6 +17,7 @@
 from requests import Response
 from six import b
 
+__all__ = ['StaticResponseFactory']
 
 DEFAULT_RESPONSE_HEADERS = {}
 DEFAULT_GOOD_STATUS_CODE = 200

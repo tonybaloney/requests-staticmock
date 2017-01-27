@@ -21,6 +21,10 @@ from six import b
 from requests.adapters import BaseAdapter, HTTPAdapter
 from requests_staticmock.responses import StaticResponseFactory
 
+__all__ = [
+    'Adapter',
+    'ClassAdapter'
+]
 
 BASE_PATH = os.getcwd()
 

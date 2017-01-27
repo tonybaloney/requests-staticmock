@@ -14,11 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from requests_staticmock.context import (mock_session_with_fixtures,
-                                         mock_session_with_class)
-from requests_staticmock.adapter import (Adapter, ClassAdapter)
-from requests_staticmock.abstractions import BaseMockClass
+__all__ = [
+    'BaseMockClass'
+]
 
-__author__ = 'Anthony Shaw'
-__email__ = 'anthonyshaw@apache.org'
-__version__ = '0.2.0'
+
+class BaseMockClass(object):
+    """
+    Base class for inheriting
+    """
+    pass

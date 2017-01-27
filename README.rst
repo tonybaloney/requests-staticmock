@@ -56,6 +56,32 @@ or domain, e.g.
     session.request('http://normal.com/api/example') # works as normal
     session.request('http://specialwebsite.com') # returns static mocks
 
+Class adapter
+~~~~~~~~~~~~~
+
+Instead of using a static asset adapter, you can use an adapter that expects an internal method to respond with a string, e.g.
+
+GET `/test/example.xml` will call method `_test_example_xml(self, request)`
+GET `/test/example.xml?query=param` will call method `_test_example_xml(self, request)`
+
+This can be used via `requests_staticmock.ClassAdapter` or the context manager
+
+
+.. code-block:: python
+
+    import requests
+    import requests_staticmock
+    
+    
+    class MyTestClass(requests_staticmock.BaseMockClass):
+        def _api_v1_idea(self, request):
+            return "woop woop"
+    
+    session = requests.Session()
+    with requests_staticmock.mock_session_with_class(session, MyTestClass, 'http://test_context.com'):
+        # will return a response object with the contents 'woop woop'
+        response = new_session.request('get', 'http://test_context.com/test.json')
+
 Features
 --------
 
