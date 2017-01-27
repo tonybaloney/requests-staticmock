@@ -19,7 +19,7 @@ requirements = [
 ]
 
 test_requirements = [
-    # TODO: put package test requirements here
+   'nose2'
 ]
 
 setup(
@@ -53,6 +53,6 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
     ],
-    test_suite='tests',
+    test_suite='nose2.collector.collector',
     tests_require=test_requirements
 )

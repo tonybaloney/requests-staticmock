@@ -14,11 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os.path, os
-import six
+import os.path
+import os
+
 from requests.adapters import BaseAdapter, HTTPAdapter
-from requests.packages.urllib3.response import HTTPResponse
-from requests_mock import compat
+from requests_staticmock.responses import StaticResponseFactory
+
 
 BASE_PATH = os.getcwd()
 
@@ -32,30 +33,22 @@ class Adapter(BaseAdapter):
         path_url = request.path_url
         match = None
         for path in self.paths:
-            target_path = os.path.normpath(os.path.join(BASE_PATH, path, path_url[1:]))
+            target_path = os.path.normpath(os.path.join(BASE_PATH,
+                                                        path,
+                                                        path_url[1:]))
             if os.path.isfile(target_path):
                 match = target_path
                 break
         if match:
             with open(match, 'r') as fo:
                 body = fo.read()
-            _response = HTTPResponse(
-                status=kwargs.get('status_code', 200),
-                headers=kwargs.get('headers', {}),
-                reason=kwargs.get('reason'),
-                body=body,
-                decode_content=False,
-                preload_content=False,
-                original_response=compat._fake_http_response)
+            return StaticResponseFactory.GoodResponse(body=body,
+                                                      request=request)
         else:
-            _response = HTTPResponse(
-                status=404,
-                headers={},
-                reason='Not found',
-                body='')
+            return StaticResponseFactory.BadResponse(status_code=404,
+                                                     request=request,
+                                                     body="Not found.")
 
-        return self._http_adapter.build_response(request, _response)
-        
     def close(self):
         pass
 
