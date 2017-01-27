@@ -14,7 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 
 from requests.compat import OrderedDict
 from requests_staticmock import adapter
@@ -39,6 +42,12 @@ class TestRequestsStaticMock(unittest.TestCase):
     def test_json_responses(self):
         response = self.session.request('get', 'http://test.com/test_json.json')
         self.assertEqual(response.json()['hello'], 'world')
+
+    def test_bad_response(self):
+        response = self.session.request('get', 'http://test.com/bad.url')
+        with self.assertRaises(Exception):
+            response.raise_for_status()
+        self.assertEquals(response.status_code, 404)
 
 if __name__ == '__main__':
     import sys
