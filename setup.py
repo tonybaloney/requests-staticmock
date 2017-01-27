@@ -19,7 +19,7 @@ requirements = [
 ]
 
 test_requirements = [
-   'nose2'
+   'pytest'
 ]
 
 setup(
@@ -58,6 +58,6 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy'],
-    test_suite='nose2.collector.collector',
-    tests_require=test_requirements
+    tests_require=test_requirements,
+    setup_requires=['pytest-runner']
 )
