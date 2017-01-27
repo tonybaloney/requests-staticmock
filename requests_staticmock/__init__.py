@@ -21,4 +21,4 @@ from requests_staticmock.abstractions import BaseMockClass
 
 __author__ = 'Anthony Shaw'
 __email__ = 'anthonyshaw@apache.org'
-__version__ = '0.5.0'
+__version__ = '0.6.0'
