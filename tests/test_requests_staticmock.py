@@ -15,8 +15,8 @@
 # limitations under the License.
 
 import unittest
-from collections import OrderedDict
 
+from requests.compat import OrderedDict
 from requests_staticmock import adapter
 from requests import Session
 
