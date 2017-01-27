@@ -26,13 +26,12 @@ BASE_PATH = os.getcwd()
 
 class Adapter(BaseAdapter):
     def __init__(self, base_path=None):
+        self.paths = []
         if base_path:
-            self.paths = [base_path]
-        else:
-            self.paths = []
+            self.register_path(base_path)
         self._http_adapter = HTTPAdapter()
 
-    def send(self, request, **kwargs):
+    def match_url(self, request):
         path_url = request.path_url
         match = None
         for path in self.paths:
@@ -42,11 +41,19 @@ class Adapter(BaseAdapter):
             if os.path.isfile(target_path):
                 match = target_path
                 break
-        if match:
-            with open(match, 'r') as fo:
+        return match
+
+    def response_from_fixture(self, request, fixture_path):
+        with open(fixture_path, 'rb') as fo:
                 body = fo.read()
-            return StaticResponseFactory.GoodResponse(body=body,
-                                                      request=request)
+        return StaticResponseFactory.GoodResponse(body=body,
+                                                  request=request)
+
+    def send(self, request, **kwargs):
+        match = self.match_url(request)
+        if match:
+            return self.response_from_fixture(request=request,
+                                              fixture_path=match)
         else:
             return StaticResponseFactory.BadResponse(status_code=404,
                                                      request=request,
