@@ -85,6 +85,22 @@ class TestRequestsStaticMock(unittest.TestCase):
             response = class_session.get('http://test.com/test.json')
         self.assertEquals(response.text, "hello alabama")
 
+    def test_class_context_manager_with_params(self):
+        class_session = Session()
+        class TestMockClass(BaseMockClass):
+            def _test_json(self, request):
+                if request.method == 'GET':
+                    return 'detroit'
+                else:
+                    return 'san diego'
+
+        a = ClassAdapter(TestMockClass)
+        with mock_session_with_class(class_session, TestMockClass, 'http://test.com'):
+            response1 = class_session.get('http://test.com/test.json')
+            response2 = class_session.post('http://test.com/test.json', data='123')
+        self.assertEquals(response1.text, 'detroit')
+        self.assertEquals(response2.text, 'san diego')
+
 if __name__ == '__main__':
     import sys
     sys.exit(unittest.main())

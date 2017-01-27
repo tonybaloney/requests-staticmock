@@ -82,6 +82,8 @@ class ClassAdapter(Adapter):
 
     def send(self, request, **kwargs):
         method_name = request.path_url.replace('/', '_').replace('.', '_')
+        if '?' in method_name:
+            method_name = method_name.split('?')[0]
         if hasattr(self.cls, method_name):
             match = getattr(self.cls, method_name)
             response = match(request)
