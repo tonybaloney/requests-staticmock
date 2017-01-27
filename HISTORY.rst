@@ -2,6 +2,13 @@
 History
 =======
 
+0.6.0 (2017-01-29)
+------------------
+
+* Add support for the class adapter methods to return either a string or
+  a response object
+* Moved to Py.Test
+
 0.3.0 (2017-01-29)
 ------------------
 

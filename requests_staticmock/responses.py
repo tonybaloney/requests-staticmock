@@ -102,5 +102,5 @@ class StaticResponseFactory(object):
         else:
             response.headers = DEFAULT_RESPONSE_HEADERS
         response.request = request
-        response._content = b(body)
+        response._content = body
         return response

@@ -16,6 +16,7 @@
 
 import os.path
 import os
+import six
 from six import b
 
 from requests.adapters import BaseAdapter, HTTPAdapter
@@ -63,7 +64,7 @@ class Adapter(BaseAdapter):
         else:
             return StaticResponseFactory.BadResponse(status_code=404,
                                                      request=request,
-                                                     body="Not found.")
+                                                     body=b("Not found."))
 
     def close(self):
         pass
@@ -87,9 +88,13 @@ class ClassAdapter(Adapter):
         if hasattr(self.cls, method_name):
             match = getattr(self.cls, method_name)
             response = match(request)
-            return StaticResponseFactory.GoodResponse(body=b(response),
-                                                      request=request)
+            if isinstance(response, six.string_types):
+                return StaticResponseFactory.GoodResponse(
+                    body=b(response),
+                    request=request)
+            else:
+                return response
         else:
             return StaticResponseFactory.BadResponse(status_code=404,
                                                      request=request,
-                                                     body="Not found.")
+                                                     body=b("Not found."))

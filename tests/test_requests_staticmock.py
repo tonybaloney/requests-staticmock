@@ -16,12 +16,15 @@
 
 import pytest
 
+from six import b
+
 from requests.compat import OrderedDict
 from requests_staticmock import (Adapter,
                                  ClassAdapter,
                                  BaseMockClass,
                                  mock_session_with_fixtures,
                                  mock_session_with_class)
+from requests_staticmock.responses import StaticResponseFactory
 from requests import Session
 
 
@@ -61,6 +64,19 @@ def test_context_manager():
     assert len(new_session.adapters) == 2
 
 
+def test_context_manager_multiple_urls():
+    new_session = Session()
+    with mock_session_with_fixtures(new_session, 'tests/fixtures',
+                                    ('http://test_context.com',
+                                     'http://test2_context.com')):
+        response = new_session.request('get', 'http://test_context.com/test.txt')
+        assert response.text == 'Hello world!'
+        response2 = new_session.request('get', 'http://test2_context.com/test.txt')
+        assert response2.text == 'Hello world!'
+    # assert resets back to default 2 adapters
+    assert len(new_session.adapters) == 2
+
+
 def test_class_adapter():
     class_session = Session()
     class TestMockClass(BaseMockClass):
@@ -86,6 +102,21 @@ def test_class_context_manager():
     assert response.text == "hello alabama"
 
 
+def test_class_context_manager_multiple_urls():
+    class_session = Session()
+    class TestMockClass(BaseMockClass):
+        def _test_json(self, request):
+            return "hello alabama"
+
+    a = ClassAdapter(TestMockClass)
+    with mock_session_with_class(class_session, TestMockClass, ('http://test.com',
+                                                                'http://test2.com')):
+        response = class_session.get('http://test.com/test.json')
+        response2 = class_session.get('http://test2.com/test.json')
+    assert response.text == "hello alabama"
+    assert response2.text == "hello alabama"
+
+
 def test_class_context_manager_with_params():
     class_session = Session()
     class TestMockClass(BaseMockClass):
@@ -101,3 +132,43 @@ def test_class_context_manager_with_params():
         response2 = class_session.post('http://test.com/test.json', data='123')
     assert response1.text == 'detroit'
     assert response2.text == 'san diego'
+
+
+def test_class_context_manager_good_factory():
+    class_session = Session()
+    class TestMockClass(BaseMockClass):
+        def _test_json(self, request):
+            return StaticResponseFactory.GoodResponse(
+                request=request,
+                body=b("it's my life"),
+                headers={'now': 'never'},
+                status_code=201
+            )
+
+    a = ClassAdapter(TestMockClass)
+    with mock_session_with_class(class_session, TestMockClass, 'http://test.com'):
+        response = class_session.get('http://test.com/test.json')
+    assert response.text == "it's my life"
+    assert 'now' in response.headers.keys()
+    assert response.headers['now'] == 'never'
+    assert response.status_code == 201
+
+
+def test_class_context_manager_bad_factory():
+    class_session = Session()
+    class TestMockClass(BaseMockClass):
+        def _test_json(self, request):
+            return StaticResponseFactory.BadResponse(
+                request=request,
+                body=b("it's not over"),
+                headers={'now': 'never'},
+                status_code=504
+            )
+
+    a = ClassAdapter(TestMockClass)
+    with mock_session_with_class(class_session, TestMockClass, 'http://test.com'):
+        response = class_session.get('http://test.com/test.json')
+    assert response.text == "it's not over"
+    assert 'now' in response.headers.keys()
+    assert response.headers['now'] == 'never'
+    assert response.status_code == 504
