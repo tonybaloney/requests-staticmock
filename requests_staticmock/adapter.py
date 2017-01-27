@@ -20,6 +20,7 @@ from six import b
 
 from requests.adapters import BaseAdapter, HTTPAdapter
 from requests_staticmock.responses import StaticResponseFactory
+from requests_staticmock.abstractions import BaseMockClass
 
 __all__ = [
     'Adapter',
@@ -73,13 +74,17 @@ class Adapter(BaseAdapter):
 
 class ClassAdapter(Adapter):
     def __init__(self, cls):
+        if not issubclass(cls, BaseMockClass):
+            raise TypeError("Must be BaseMockClass")
+
+        cls = cls()
         self.cls = cls
 
     def send(self, request, **kwargs):
         method_name = request.path_url.replace('/', '_').replace('.', '_')
         if hasattr(self.cls, method_name):
             match = getattr(self.cls, method_name)
-            response = match(self.cls, request)
+            response = match(request)
             return StaticResponseFactory.GoodResponse(body=b(response),
                                                       request=request)
         else:
