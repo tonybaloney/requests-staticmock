@@ -16,6 +16,7 @@
 
 import os.path
 import os
+from six import b
 
 from requests.adapters import BaseAdapter, HTTPAdapter
 from requests_staticmock.responses import StaticResponseFactory
@@ -64,3 +65,20 @@ class Adapter(BaseAdapter):
 
     def register_path(self, path):
         self.paths.append(path)
+
+
+class ClassAdapter(Adapter):
+    def __init__(self, cls):
+        self.cls = cls
+
+    def send(self, request, **kwargs):
+        method_name = request.path_url.replace('/', '_').replace('.', '_')
+        if hasattr(self.cls, method_name):
+            match = getattr(self.cls, method_name)
+            response = match(self.cls, request)
+            return StaticResponseFactory.GoodResponse(body=b(response),
+                                                      request=request)
+        else:
+            return StaticResponseFactory.BadResponse(status_code=404,
+                                                     request=request,
+                                                     body="Not found.")

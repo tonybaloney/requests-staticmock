@@ -49,3 +49,33 @@ def mock_session_with_fixtures(session, path, url):
     mock_adapter.register_path(path)
     yield
     session.adapters = _orig_adapters
+
+
+@contextlib.contextmanager
+def mock_session_with_class(session, cls, url):
+    """
+    Context Manager
+
+    Mock the responses with a particular session
+    to any private methods for the URLs
+
+    :param session: The requests session object
+    :type  session: :class:`requests.Session`
+
+    :param cls: The class instance with private methods for URLs
+    :type  cls: ``object``
+
+    :param url: The base URL to mock, e.g. http://mock.com, http://
+        supports a single URL or a list
+    :type  url: ``str`` or ``list``
+    """
+    _orig_adapters = session.adapters
+    mock_adapter = adapter.ClassAdapter(cls)
+    session.adapters = OrderedDict()
+    if isinstance(url, (list, tuple)):
+        for u in url:
+            session.mount(u, mock_adapter)
+    else:
+        session.mount(url, mock_adapter)
+    yield
+    session.adapters = _orig_adapters

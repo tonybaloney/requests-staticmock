@@ -21,7 +21,9 @@ except ImportError:
 
 from requests.compat import OrderedDict
 from requests_staticmock import (Adapter,
-                                 mock_session_with_fixtures)
+                                 ClassAdapter,
+                                 mock_session_with_fixtures,
+                                 mock_session_with_class)
 from requests import Session
 
 
@@ -58,6 +60,29 @@ class TestRequestsStaticMock(unittest.TestCase):
             self.assertEqual(response.text, 'Hello world!')
         # assert resets back to default 2 adapters
         self.assertEqual(len(new_session.adapters), 2)
+
+    def test_class_adapter(self):
+        class_session = Session()
+        class TestMockClass(object):
+            def _test_json(self, request):
+                return "hello alabama"
+
+        a = ClassAdapter(TestMockClass)
+        class_session.adapters = OrderedDict()
+        class_session.mount("http://test.com", a)
+        response = class_session.get('http://test.com/test.json')
+        self.assertEquals(response.text, "hello alabama")
+
+    def test_class_context_manager(self):
+        class_session = Session()
+        class TestMockClass(object):
+            def _test_json(self, request):
+                return "hello alabama"
+
+        a = ClassAdapter(TestMockClass)
+        with mock_session_with_class(class_session, TestMockClass, 'http://test.com'):
+            response = class_session.get('http://test.com/test.json')
+        self.assertEquals(response.text, "hello alabama")
 
 if __name__ == '__main__':
     import sys
