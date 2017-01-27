@@ -80,7 +80,7 @@ This can be used via `requests_staticmock.ClassAdapter` or the context manager
     session = requests.Session()
     with requests_staticmock.mock_session_with_class(session, MyTestClass, 'http://test_context.com'):
         # will return a response object with the contents 'woop woop'
-        response = new_session.request('get', 'http://test_context.com/test.json')
+        response = new_session.request('get', 'http://test_context.com/api/v1/idea')
 
 Features
 --------
