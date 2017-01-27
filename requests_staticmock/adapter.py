@@ -32,7 +32,15 @@ BASE_PATH = os.getcwd()
 
 
 class Adapter(BaseAdapter):
+    """
+    A replacement session adapter that responds with the content
+    of static files matching the path of the requested URL
+    """
     def __init__(self, base_path=None):
+        """
+        :param base_path: Use the given base_path as the search path
+        :type  base_path: ``str``
+        """
         self.paths = []
         if base_path:
             self.register_path(base_path)
@@ -69,11 +77,29 @@ class Adapter(BaseAdapter):
         pass
 
     def register_path(self, path):
+        """
+        Register a new search path
+
+        :param path: The new search path
+        :type  path: ``str``
+        """
         self.paths.append(path)
 
 
 class ClassAdapter(Adapter):
+    """
+    A requests Adapter for a class that has methods matching the
+    URLS, e.g. `def _api_v1_test()` would be called for
+    session.get('api/v1/test')
+    """
+    
     def __init__(self, cls):
+        """
+        Create a new class adapter for a given class type
+        
+        :param cls: A class type
+        :type  cls: ``class``
+        """
         if not issubclass(cls, BaseMockClass):
             raise TypeError("Must be BaseMockClass")
 

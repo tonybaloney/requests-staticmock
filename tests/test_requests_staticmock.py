@@ -30,10 +30,9 @@ from requests import Session
 
 def _get_session():
     session = Session()
-    a = Adapter()
+    a = Adapter('tests/fixtures')
     session.adapters = OrderedDict()
     session.mount("http://test.com", a)
-    a.register_path('tests/fixtures')
     return session
 
 
@@ -198,3 +197,12 @@ def test_class_context_manager_bad_factory():
     assert 'now' in response.headers.keys()
     assert response.headers['now'] == 'never'
     assert response.status_code == 504
+
+
+def test_class_context_manager_bad_type():
+    class_session = Session()
+    class WrongClassType(object):
+        def _test_json(self, request):
+            return "never"
+    with pytest.raises(TypeError):
+        a = ClassAdapter(WrongClassType)
