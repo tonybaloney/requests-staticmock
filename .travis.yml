@@ -10,3 +10,5 @@ python:
 install: "pip install -r requirements_dev.txt"
 # command to run tests
 script: nose2
+after_success:
+  - coveralls

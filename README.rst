@@ -18,16 +18,20 @@ requests-staticmock
 
 A static HTTP mock interface for requests
 
-* Free software: ISC license
+* Free software: Apache 2 License
 * Documentation: https://requests-staticmock.readthedocs.org.
 
 Features
 --------
 
-* TODO
+* Allow mocking of HTTP responses via a directory of static fixtures
+* Support for sub-directories matching URL paths
+
 
 Credits
 ---------
+
+This project takes inspiration and ideas from the `requests_mock` package, maintained by the OpenStack foundation.
 
 This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
 
