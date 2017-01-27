@@ -12,6 +12,9 @@ requests-staticmock
         :target: https://readthedocs.org/projects/requests-staticmock/?badge=latest
         :alt: Documentation Status
 
+.. image:: https://coveralls.io/repos/github/tonybaloney/requests-staticmock/badge.svg?branch=master
+        :target: https://coveralls.io/github/tonybaloney/requests-staticmock?branch=master
+
 
 A static HTTP mock interface for requests
 
