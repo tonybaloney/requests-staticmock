@@ -15,7 +15,6 @@
 # limitations under the License.
 
 from requests import Response
-from six import b
 
 __all__ = ['StaticResponseFactory']
 

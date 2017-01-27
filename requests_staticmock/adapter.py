@@ -19,7 +19,7 @@ import os
 import six
 from six import b
 
-from requests.adapters import BaseAdapter, HTTPAdapter
+from requests.adapters import BaseAdapter
 from requests_staticmock.responses import StaticResponseFactory
 from requests_staticmock.abstractions import BaseMockClass
 
@@ -36,7 +36,6 @@ class Adapter(BaseAdapter):
         self.paths = []
         if base_path:
             self.register_path(base_path)
-        self._http_adapter = HTTPAdapter()
 
     def match_url(self, request):
         path_url = request.path_url

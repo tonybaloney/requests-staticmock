@@ -134,6 +134,32 @@ def test_class_context_manager_with_params():
     assert response2.text == 'san diego'
 
 
+def test_class_context_manager_query():
+    class_session = Session()
+    class TestMockClass(BaseMockClass):
+        def _test_json(self, request):
+            return 'always'
+
+    a = ClassAdapter(TestMockClass)
+    with mock_session_with_class(class_session, TestMockClass, 'http://test.com'):
+        response1 = class_session.get('http://test.com/test.json',
+                                      params={'test': 'param'})
+    assert response1.status_code == 200
+    assert response1.text == 'always'
+
+
+def test_class_context_manager_404_response():
+    class_session = Session()
+    class TestMockClass(BaseMockClass):
+        def _test_json(self, request):
+            return 'never'
+
+    a = ClassAdapter(TestMockClass)
+    with mock_session_with_class(class_session, TestMockClass, 'http://test.com'):
+        response1 = class_session.get('http://test.com/banana.json')
+    assert response1.status_code == 404
+
+
 def test_class_context_manager_good_factory():
     class_session = Session()
     class TestMockClass(BaseMockClass):
