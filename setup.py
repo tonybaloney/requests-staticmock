@@ -24,7 +24,7 @@ test_requirements = [
 
 setup(
     name='requests-staticmock',
-    version='0.6.0',
+    version='0.7.0',
     description="A static HTTP mock interface for requests",
     long_description=readme + '\n\n' + history,
     author="Anthony Shaw",
