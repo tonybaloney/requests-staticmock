@@ -17,14 +17,14 @@
 import pytest
 
 from six import b
-
 from requests.compat import OrderedDict
 from requests_staticmock import (Adapter,
                                  ClassAdapter,
                                  BaseMockClass,
                                  mock_session_with_fixtures,
                                  mock_session_with_class)
-from requests_staticmock.responses import StaticResponseFactory
+from requests_staticmock.responses import (StaticResponseFactory,
+                                           DEFAULT_BAD_STATUS_CODE)
 from requests import Session
 
 
@@ -187,7 +187,6 @@ def test_class_context_manager_bad_factory():
                 request=request,
                 body=b("it's not over"),
                 headers={'now': 'never'},
-                status_code=504
             )
 
     a = ClassAdapter(TestMockClass)
@@ -196,7 +195,7 @@ def test_class_context_manager_bad_factory():
     assert response.text == "it's not over"
     assert 'now' in response.headers.keys()
     assert response.headers['now'] == 'never'
-    assert response.status_code == 504
+    assert response.status_code == DEFAULT_BAD_STATUS_CODE
 
 
 def test_class_context_manager_bad_type():
@@ -206,3 +205,27 @@ def test_class_context_manager_bad_type():
             return "never"
     with pytest.raises(TypeError):
         a = ClassAdapter(WrongClassType)
+
+
+def test_class_context_manager_unpacked():
+    class_session = Session()
+    class TestMockClass(BaseMockClass):
+        def _test_json(self, method, params, headers):
+            return "{0}{1}{2}".format(method.upper(),
+                                      params['a'],
+                                      headers['X-Special'])
+        def _test2_json(self, url, body):
+            return "{0}{1}".format(url,
+                                      body)
+
+    a = ClassAdapter(TestMockClass)
+    with mock_session_with_class(class_session, TestMockClass, 'http://test.com'):
+        response1 = class_session.get('http://test.com/test.json',
+                                      params={'a': 'param'},
+                                      headers={'X-Special': 'forces'})
+        response2 = class_session.get('http://test.com/test2.json',
+                                      data='hello')
+    assert response1.status_code == 200
+    assert response1.text == 'GETparamforces'
+    assert response2.status_code == 200
+    assert response2.text == 'http://test.com/test2.jsonhello'

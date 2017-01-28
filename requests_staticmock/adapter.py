@@ -17,7 +17,9 @@
 import os.path
 import os
 import six
+import inspect
 from six import b
+from six.moves.urllib.parse import (parse_qsl, urlparse)
 
 from requests.adapters import BaseAdapter
 from requests_staticmock.responses import StaticResponseFactory
@@ -73,7 +75,8 @@ class Adapter(BaseAdapter):
                                                      request=request,
                                                      body=b("Not found."))
 
-    def close(self):
+    def close(self):  # pragma: no cover
+        # Hides NotImplementedError in base class
         pass
 
     def register_path(self, path):
@@ -92,11 +95,11 @@ class ClassAdapter(Adapter):
     URLS, e.g. `def _api_v1_test()` would be called for
     session.get('api/v1/test')
     """
-    
+
     def __init__(self, cls):
         """
         Create a new class adapter for a given class type
-        
+
         :param cls: A class type
         :type  cls: ``class``
         """
@@ -107,12 +110,26 @@ class ClassAdapter(Adapter):
         self.cls = cls
 
     def send(self, request, **kwargs):
-        method_name = request.path_url.replace('/', '_').replace('.', '_')
-        if '?' in method_name:
-            method_name = method_name.split('?')[0]
+        parsed_url = urlparse(request.path_url)
+        method_name = parsed_url.path.replace('/', '_').replace('.', '_')
+
         if hasattr(self.cls, method_name):
             match = getattr(self.cls, method_name)
-            response = match(request)
+            spec = inspect.getargspec(match)
+            kwargs = {}
+            if 'request' in spec.args:
+                kwargs['request'] = request
+            if 'method' in spec.args:
+                kwargs['method'] = request.method
+            if 'params' in spec.args:
+                kwargs['params'] = dict(parse_qsl(parsed_url.query))
+            if 'headers' in spec.args:
+                kwargs['headers'] = request.headers
+            if 'url' in spec.args:
+                kwargs['url'] = request.url
+            if 'body' in spec.args:
+                kwargs['body'] = request.body
+            response = match(**kwargs)
             if isinstance(response, six.string_types):
                 return StaticResponseFactory.GoodResponse(
                     body=b(response),
