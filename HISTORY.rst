@@ -2,6 +2,12 @@
 History
 =======
 
+0.7.0 (2017-01-29)
+------------------
+
+* Add support version unpacking, class adapters now support a range of keyword arguments,
+  provided in no particular order.
+
 0.6.0 (2017-01-29)
 ------------------
 
