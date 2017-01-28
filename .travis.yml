@@ -11,5 +11,6 @@ python:
 install: "pip install -r requirements_dev.txt"
 # command to run tests
 script: python setup.py test
+before_script: "flake8 requests_staticmock/ tests --max-line-length=90"
 after_success:
   - coveralls

@@ -78,6 +78,7 @@ def test_context_manager_multiple_urls():
 
 def test_class_adapter():
     class_session = Session()
+
     class TestMockClass(BaseMockClass):
         def _test_json(self, request):
             return "hello alabama"
@@ -91,11 +92,11 @@ def test_class_adapter():
 
 def test_class_context_manager():
     class_session = Session()
+
     class TestMockClass(BaseMockClass):
         def _test_json(self, request):
             return "hello alabama"
 
-    a = ClassAdapter(TestMockClass)
     with mock_session_with_class(class_session, TestMockClass, 'http://test.com'):
         response = class_session.get('http://test.com/test.json')
     assert response.text == "hello alabama"
@@ -103,11 +104,11 @@ def test_class_context_manager():
 
 def test_class_context_manager_multiple_urls():
     class_session = Session()
+
     class TestMockClass(BaseMockClass):
         def _test_json(self, request):
             return "hello alabama"
 
-    a = ClassAdapter(TestMockClass)
     with mock_session_with_class(class_session, TestMockClass, ('http://test.com',
                                                                 'http://test2.com')):
         response = class_session.get('http://test.com/test.json')
@@ -118,6 +119,7 @@ def test_class_context_manager_multiple_urls():
 
 def test_class_context_manager_with_params():
     class_session = Session()
+
     class TestMockClass(BaseMockClass):
         def _test_json(self, request):
             if request.method == 'GET':
@@ -125,7 +127,6 @@ def test_class_context_manager_with_params():
             else:
                 return 'san diego'
 
-    a = ClassAdapter(TestMockClass)
     with mock_session_with_class(class_session, TestMockClass, 'http://test.com'):
         response1 = class_session.get('http://test.com/test.json')
         response2 = class_session.post('http://test.com/test.json', data='123')
@@ -135,11 +136,11 @@ def test_class_context_manager_with_params():
 
 def test_class_context_manager_query():
     class_session = Session()
+
     class TestMockClass(BaseMockClass):
         def _test_json(self, request):
             return 'always'
 
-    a = ClassAdapter(TestMockClass)
     with mock_session_with_class(class_session, TestMockClass, 'http://test.com'):
         response1 = class_session.get('http://test.com/test.json',
                                       params={'test': 'param'})
@@ -149,11 +150,11 @@ def test_class_context_manager_query():
 
 def test_class_context_manager_404_response():
     class_session = Session()
+
     class TestMockClass(BaseMockClass):
         def _test_json(self, request):
             return 'never'
 
-    a = ClassAdapter(TestMockClass)
     with mock_session_with_class(class_session, TestMockClass, 'http://test.com'):
         response1 = class_session.get('http://test.com/banana.json')
     assert response1.status_code == 404
@@ -161,6 +162,7 @@ def test_class_context_manager_404_response():
 
 def test_class_context_manager_good_factory():
     class_session = Session()
+
     class TestMockClass(BaseMockClass):
         def _test_json(self, request):
             return StaticResponseFactory.GoodResponse(
@@ -170,7 +172,6 @@ def test_class_context_manager_good_factory():
                 status_code=201
             )
 
-    a = ClassAdapter(TestMockClass)
     with mock_session_with_class(class_session, TestMockClass, 'http://test.com'):
         response = class_session.get('http://test.com/test.json')
     assert response.text == "it's my life"
@@ -181,6 +182,7 @@ def test_class_context_manager_good_factory():
 
 def test_class_context_manager_bad_factory():
     class_session = Session()
+
     class TestMockClass(BaseMockClass):
         def _test_json(self, request):
             return StaticResponseFactory.BadResponse(
@@ -189,7 +191,6 @@ def test_class_context_manager_bad_factory():
                 headers={'now': 'never'},
             )
 
-    a = ClassAdapter(TestMockClass)
     with mock_session_with_class(class_session, TestMockClass, 'http://test.com'):
         response = class_session.get('http://test.com/test.json')
     assert response.text == "it's not over"
@@ -199,26 +200,27 @@ def test_class_context_manager_bad_factory():
 
 
 def test_class_context_manager_bad_type():
-    class_session = Session()
+
     class WrongClassType(object):
         def _test_json(self, request):
             return "never"
     with pytest.raises(TypeError):
-        a = ClassAdapter(WrongClassType)
+        ClassAdapter(WrongClassType)
 
 
 def test_class_context_manager_unpacked():
     class_session = Session()
+
     class TestMockClass(BaseMockClass):
         def _test_json(self, method, params, headers):
             return "{0}{1}{2}".format(method.upper(),
                                       params['a'],
                                       headers['X-Special'])
+
         def _test2_json(self, url, body):
             return "{0}{1}".format(url,
-                                      body)
+                                   body)
 
-    a = ClassAdapter(TestMockClass)
     with mock_session_with_class(class_session, TestMockClass, 'http://test.com'):
         response1 = class_session.get('http://test.com/test.json',
                                       params={'a': 'param'},

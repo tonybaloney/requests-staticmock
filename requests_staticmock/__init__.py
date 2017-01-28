@@ -14,10 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from requests_staticmock.context import (mock_session_with_fixtures,
-                                         mock_session_with_class)
-from requests_staticmock.adapter import (Adapter, ClassAdapter)
-from requests_staticmock.abstractions import BaseMockClass
+from requests_staticmock.context import (mock_session_with_fixtures,  # NOQA
+                                         mock_session_with_class)  # NOQA
+from requests_staticmock.adapter import (Adapter, ClassAdapter)  # NOQA
+from requests_staticmock.abstractions import BaseMockClass  # NOQA
 
 __author__ = 'Anthony Shaw'
 __email__ = 'anthonyshaw@apache.org'
