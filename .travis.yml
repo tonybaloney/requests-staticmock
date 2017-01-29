@@ -7,7 +7,7 @@ python:
   - "3.5"
   - "3.6"
   - "pypy"
-  - "lint"
+
 # command to install dependencies
 install: "pip install -r requirements_dev.txt"
 
@@ -16,7 +16,7 @@ script: python setup.py test
 
 matrix:
     include:
-        - python: "lint"
+        - python: "2.7"
           script: "flake8 requests_staticmock/ tests --max-line-length=90"
 after_success:
   - coveralls
