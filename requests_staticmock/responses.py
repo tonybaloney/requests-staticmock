@@ -15,6 +15,7 @@
 # limitations under the License.
 
 from requests import Response
+from io import BytesIO
 
 __all__ = ['StaticResponseFactory']
 
@@ -53,7 +54,7 @@ class StaticResponseFactory(object):
         """
         response = Response()
         response.url = request.url
-        response.raw = False
+        response.raw = BytesIO(body)
         if status_code:
             response.status_code = status_code
         else:
@@ -91,7 +92,7 @@ class StaticResponseFactory(object):
         """
         response = Response()
         response.url = request.url
-        response.raw = False
+        response.raw = BytesIO(body)
         if status_code:
             response.status_code = status_code
         else:
