@@ -231,3 +231,9 @@ def test_class_context_manager_unpacked():
     assert response1.text == 'GETparamforces'
     assert response2.status_code == 200
     assert response2.text == 'http://test.com/test2.jsonhello'
+
+
+def test_stream_request():
+    response = _get_session().request('get', 'http://test.com/test.txt', stream=True)
+    for line in response.iter_lines():
+        assert line == b'Hello world!'
