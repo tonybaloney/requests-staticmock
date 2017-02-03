@@ -2,6 +2,11 @@
 History
 =======
 
+0.8.0 (2017-02-02)
+------------------
+
+* Add support for streaming requests and iter_content/iter_lines
+
 0.7.0 (2017-01-29)
 ------------------
 
