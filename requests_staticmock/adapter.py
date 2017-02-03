@@ -48,7 +48,7 @@ class Adapter(BaseAdapter):
             self.register_path(base_path)
 
     def match_url(self, request):
-        path_url = request.path_url
+        path_url = urlparse(request.path_url).path
         match = None
         for path in self.paths:
             target_path = os.path.normpath(os.path.join(BASE_PATH,
