@@ -16,7 +16,7 @@ requests-staticmock
         :target: https://coveralls.io/github/tonybaloney/requests-staticmock?branch=master
 
 
-A static HTTP mock interface for requests
+A static HTTP mock interface for testing classes that leverage Python `requests` with **no** monkey patching!
 
 * Free software: Apache 2 License
 * Documentation: https://requests-staticmock.readthedocs.org.
