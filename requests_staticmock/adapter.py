@@ -20,7 +20,6 @@ import six
 import inspect
 from six import b
 from six.moves.urllib.parse import (parse_qsl, urlparse, quote)
-import logging
 
 from requests.adapters import BaseAdapter
 from requests_staticmock.responses import StaticResponseFactory
@@ -88,7 +87,7 @@ class Adapter(BaseAdapter):
         else:
             return StaticResponseFactory.BadResponse(status_code=404,
                                                      request=request,
-                                                     body=b("Not found."))
+                                                     body=b("'Not found.'"))
 
     def close(self):  # pragma: no cover
         # Hides NotImplementedError in base class
