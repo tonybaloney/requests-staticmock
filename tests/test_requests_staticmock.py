@@ -241,6 +241,6 @@ def test_stream_request():
 
 def test_query_params():
     response = _get_session().request(
-        'get', 'http://test.com/test2.txt', 
+        'get', 'http://test.com/test2.txt',
         params={'query': 'test'})
     assert response.text == 'test'
