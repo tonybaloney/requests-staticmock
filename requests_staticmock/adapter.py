@@ -19,7 +19,8 @@ import os
 import six
 import inspect
 from six import b
-from six.moves.urllib.parse import (parse_qsl, urlparse)
+from six.moves.urllib.parse import (parse_qsl, urlparse, quote)
+import logging
 
 from requests.adapters import BaseAdapter
 from requests_staticmock.responses import StaticResponseFactory
@@ -48,7 +49,18 @@ class Adapter(BaseAdapter):
             self.register_path(base_path)
 
     def match_url(self, request):
-        path_url = urlparse(request.path_url).path
+        """
+        Match the request against a file in the adapter directory
+
+        :param request: The request
+        :type  request: :class:`requests.Request`
+
+        :return: Path to the file
+        :rtype: ``str``
+        """
+        parsed_url = urlparse(request.path_url)
+        path_url = parsed_url.path
+        query_params = parsed_url.query
         match = None
         for path in self.paths:
             target_path = os.path.normpath(os.path.join(BASE_PATH,
@@ -56,6 +68,9 @@ class Adapter(BaseAdapter):
                                                         path_url[1:]))
             if os.path.isfile(target_path):
                 match = target_path
+                break
+            elif os.path.isfile(target_path + quote('?' + query_params)):
+                match = target_path + quote('?' + query_params)
                 break
         return match
 
