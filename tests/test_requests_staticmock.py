@@ -237,3 +237,8 @@ def test_stream_request():
     response = _get_session().request('get', 'http://test.com/test.txt', stream=True)
     for line in response.iter_lines():
         assert line == b'Hello world!'
+
+
+def test_query_params():
+    response = _get_session().request('get', 'http://test.com/test2.txt', params={'query': 'test'})
+    assert response.text == 'test'

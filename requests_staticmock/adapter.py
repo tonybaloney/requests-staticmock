@@ -61,16 +61,19 @@ class Adapter(BaseAdapter):
         path_url = parsed_url.path
         query_params = parsed_url.query
         match = None
+
         for path in self.paths:
-            target_path = os.path.normpath(os.path.join(BASE_PATH,
-                                                        path,
-                                                        path_url[1:]))
-            if os.path.isfile(target_path):
-                match = target_path
-                break
-            elif os.path.isfile(target_path + quote('?' + query_params)):
-                match = target_path + quote('?' + query_params)
-                break
+            for item in self.index:
+                target_path = os.path.join(BASE_PATH, path, path_url[1:])
+
+                query_path = target_path.lower() + quote(
+                    '?' + query_params).lower()
+                if target_path.lower() == item[0]:
+                    match = item[1]
+                    break
+                elif query_path == item[0]:
+                    match = item[1]
+                    break
         return match
 
     def response_from_fixture(self, request, fixture_path):
@@ -101,6 +104,21 @@ class Adapter(BaseAdapter):
         :type  path: ``str``
         """
         self.paths.append(path)
+        self._reindex()
+
+    def _reindex(self):
+        """
+        Create a case-insensitive index of the paths
+        """
+        self.index = []
+        for path in self.paths:
+            target_path = os.path.normpath(os.path.join(BASE_PATH,
+                                                        path))
+            for root, subdirs, files in os.walk(target_path):
+                for f in files:
+                    self.index.append(
+                        (os.path.join(root, f).lower(),
+                         os.path.join(root, f)))
 
 
 class ClassAdapter(Adapter):
