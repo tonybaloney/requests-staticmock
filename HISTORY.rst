@@ -2,6 +2,17 @@
 History
 =======
 
+
+1.2.0 (2017-05-10)
+------------------
+
+* Add support for case-insensitive file matching
+
+1.1.0 (2017-05-10)
+------------------
+
+* Add support for query params being part of the file path
+
 0.8.0 (2017-02-02)
 ------------------
 
