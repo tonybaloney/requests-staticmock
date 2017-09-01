@@ -258,3 +258,20 @@ def test_class_context_manager_fixture_map():
     with mock_session_with_class(class_session, TestMockClass, 'http://test.com'):
         response = class_session.get('http://test.com/test.txt')
     assert response.text == "Hello world!"
+
+
+def test_class_context_manager_hyphens():
+    """
+    Check that hyphens are correctly mapped
+    """
+    class_session = Session()
+
+    class TestMockClass(BaseMockClass):
+        def _test_test_json(self, request):
+            return 'always'
+
+    with mock_session_with_class(class_session, TestMockClass, 'http://test.com'):
+        response1 = class_session.get('http://test.com/test-test.json',
+                                      params={'test': 'param'})
+    assert response1.status_code == 200
+    assert response1.text == 'always'

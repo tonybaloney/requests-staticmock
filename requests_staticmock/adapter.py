@@ -143,7 +143,8 @@ class ClassAdapter(Adapter):
 
     def send(self, request, **kwargs):
         parsed_url = urlparse(request.path_url)
-        method_name = parsed_url.path.replace('/', '_').replace('.', '_')
+        method_name = parsed_url.path.replace(
+            '/', '_').replace('.', '_').replace('-', '_')
 
         if hasattr(self.cls, method_name):
             match = getattr(self.cls, method_name)

@@ -3,6 +3,17 @@ History
 =======
 
 
+1.4.0 (2017-09-01)
+------------------
+
+* Class adapter correctly maps - character to _ as - is invalid method name in Python
+
+1.3.0 (2017-09-01)
+------------------
+
+* Add a property in MockClass for the adapter instance, helps when you want to respond
+  with static fixture data
+
 1.2.0 (2017-05-10)
 ------------------
 
