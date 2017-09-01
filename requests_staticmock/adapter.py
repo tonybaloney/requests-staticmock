@@ -138,7 +138,7 @@ class ClassAdapter(Adapter):
         if not issubclass(cls, BaseMockClass):
             raise TypeError("Must be BaseMockClass")
 
-        cls = cls()
+        cls = cls(adapter=self)
         self.cls = cls
 
     def send(self, request, **kwargs):

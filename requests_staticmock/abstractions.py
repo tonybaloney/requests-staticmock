@@ -23,4 +23,9 @@ class BaseMockClass(object):
     """
     Base class for inheriting
     """
-    pass
+    def __init__(self, adapter):
+        self._adapter = adapter
+
+    @property
+    def adapter(self):
+        return self._adapter

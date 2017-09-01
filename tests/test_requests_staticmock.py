@@ -244,3 +244,17 @@ def test_query_params():
         'get', 'http://test.com/test2.txt',
         params={'query': 'test'})
     assert response.text == 'test'
+
+
+def test_class_context_manager_fixture_map():
+    class_session = Session()
+
+    class TestMockClass(BaseMockClass):
+        def _test_txt(self, request):
+            return self.adapter.response_from_fixture(
+                request=request,
+                fixture_path='tests/fixtures/test.txt')
+
+    with mock_session_with_class(class_session, TestMockClass, 'http://test.com'):
+        response = class_session.get('http://test.com/test.txt')
+    assert response.text == "Hello world!"
