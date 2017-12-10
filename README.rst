@@ -15,6 +15,13 @@ requests-staticmock
 .. image:: https://coveralls.io/repos/github/tonybaloney/requests-staticmock/badge.svg?branch=master
         :target: https://coveralls.io/github/tonybaloney/requests-staticmock?branch=master
 
+.. image:: https://pyup.io/repos/github/tonybaloney/requests-staticmock/shield.svg
+     :target: https://pyup.io/repos/github/tonybaloney/requests-staticmock/
+     :alt: Updates
+
+.. image:: https://pyup.io/repos/github/tonybaloney/requests-staticmock/python-3-shield.svg
+     :target: https://pyup.io/repos/github/tonybaloney/requests-staticmock/
+     :alt: Python 3
 
 A static HTTP mock interface for testing classes that leverage Python `requests` with **no** monkey patching!
 
