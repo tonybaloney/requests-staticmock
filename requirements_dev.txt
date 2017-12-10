@@ -1,5 +1,5 @@
 bumpversion==0.5.3
-wheel
+wheel==0.30.0
 flake8
 tox
 coverage
