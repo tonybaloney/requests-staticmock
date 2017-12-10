@@ -40,7 +40,7 @@ setup(
     license="Apache License (2.0)",
     zip_safe=False,
     keywords='requests_staticmock',
-     classifiers=[
+    classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
         'Intended Audience :: Developers',
