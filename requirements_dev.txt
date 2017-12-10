@@ -1,6 +1,6 @@
 bumpversion==0.5.3
 wheel==0.30.0
-flake8
+flake8==3.5.0
 tox
 coverage
 Sphinx
