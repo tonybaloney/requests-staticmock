@@ -13,6 +13,7 @@ Contents:
 
    readme
    installation
+   api
    usage
    contributing
    authors
