@@ -50,7 +50,7 @@ class StaticResponseFactory(object):
         :type  headers: ``dict``
 
         :rtype: :class:`requests.Response`
-        :returns : a Response object
+        :returns: a Response object
         """
         response = Response()
         response.url = request.url
@@ -88,7 +88,7 @@ class StaticResponseFactory(object):
         :type  headers: ``dict``
 
         :rtype: :class:`requests.Response`
-        :returns : a Response object
+        :returns: a Response object
         """
         response = Response()
         response.url = request.url
