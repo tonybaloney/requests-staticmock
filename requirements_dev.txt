@@ -1,10 +1,10 @@
 bumpversion==0.5.3
 wheel==0.30.0
 flake8==3.5.0
-tox==2.9.1
+tox==3.0.0
 coverage==4.4.2
 Sphinx==1.6.5
 argparse==1.4.0
-docutils==0.12.0
 pytest==3.6.2
+docutils==0.14
 requests==2.18.4
