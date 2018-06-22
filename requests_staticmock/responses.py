@@ -33,7 +33,7 @@ class StaticResponseFactory(object):
     def GoodResponse(body, request, status_code=None,
                      headers=None):
         """
-        Construct a Good HTTP response
+        Construct a Good HTTP response (defined in DEFAULT_GOOD_RESPONSE_CODE)
 
         :param body: The body of the response
         :type  body: ``str``
@@ -50,7 +50,7 @@ class StaticResponseFactory(object):
         :type  headers: ``dict``
 
         :rtype: :class:`requests.Response`
-        :returns : a Response object
+        :returns: a Response object
         """
         response = Response()
         response.url = request.url
@@ -71,7 +71,7 @@ class StaticResponseFactory(object):
     def BadResponse(body, request, status_code=None,
                     headers=None):
         """
-        Construct a Good HTTP response
+        Construct a Bad HTTP response (defined in DEFAULT_BAD_RESPONSE_CODE)
 
         :param body: The body of the response
         :type  body: ``str``
@@ -88,7 +88,7 @@ class StaticResponseFactory(object):
         :type  headers: ``dict``
 
         :rtype: :class:`requests.Response`
-        :returns : a Response object
+        :returns: a Response object
         """
         response = Response()
         response.url = request.url

@@ -24,7 +24,7 @@ test_requirements = [
 
 setup(
     name='requests-staticmock',
-    version='1.3.0',
+    version='1.4.0',
     description="A static HTTP mock interface for requests",
     long_description=readme + '\n\n' + history,
     author="Anthony Shaw",
@@ -40,7 +40,7 @@ setup(
     license="Apache License (2.0)",
     zip_safe=False,
     keywords='requests_staticmock',
-     classifiers=[
+    classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
         'Intended Audience :: Developers',

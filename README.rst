@@ -15,6 +15,13 @@ requests-staticmock
 .. image:: https://coveralls.io/repos/github/tonybaloney/requests-staticmock/badge.svg?branch=master
         :target: https://coveralls.io/github/tonybaloney/requests-staticmock?branch=master
 
+.. image:: https://pyup.io/repos/github/tonybaloney/requests-staticmock/shield.svg
+     :target: https://pyup.io/repos/github/tonybaloney/requests-staticmock/
+     :alt: Updates
+
+.. image:: https://pyup.io/repos/github/tonybaloney/requests-staticmock/python-3-shield.svg
+     :target: https://pyup.io/repos/github/tonybaloney/requests-staticmock/
+     :alt: Python 3
 
 A static HTTP mock interface for testing classes that leverage Python `requests` with **no** monkey patching!
 
@@ -27,7 +34,11 @@ Usage
 As a context manager for requests Session instances
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The `requests_staticmock`
+.. automodule:: requests_staticmock.context
+    :members: mock_session_with_fixtures
+
+Example
++++++++
 
 .. code-block:: python
 
@@ -67,6 +78,11 @@ GET `/test/example.xml?query=param` will call method `_test_example_xml(self, re
 
 This can be used via `requests_staticmock.ClassAdapter` or the context manager
 
+.. automodule:: requests_staticmock.context
+    :members: mock_session_with_class
+
+Example
++++++++
 
 .. code-block:: python
 
@@ -115,17 +131,22 @@ to your callback methods and the class adapter will match them to the arguments.
     with requests_staticmock.mock_session_with_class(session, MyTestClass, 'http://test_context.com'):
         response = new_session.request('get', 'http://test_context.com/api/v1/idea')
 
+See StaticResponseFactory for simple ways of returning good and bad responses.
+
+.. autoclass:: requests_staticmock.responses.StaticResponseFactory
+    :members:
+
 Features
 --------
 
 * Allow mocking of HTTP responses via a directory of static fixtures
 * Support for sub-directories matching URL paths
 
-
 Credits
 ---------
 
-This project takes inspiration and ideas from the `requests_mock` package, maintained by the OpenStack foundation.
+This project takes inspiration and ideas from the `requests_mock` package, maintained by the OpenStack foundation. I redesigned this based on the abstractions within the requests project instead of using the
+patching pattern used in `requests_mock`. I find the responses more native, easier to work with and also the ability to load static files much easier.
 
 This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
 
