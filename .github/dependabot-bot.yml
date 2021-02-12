@@ -1,0 +1,8 @@
+safe:
+ - tox
+ - sphinx
+ - pytest
+ - coverage
+ - wheel
+ - flake8
+ - docutils
