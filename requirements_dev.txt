@@ -3,7 +3,7 @@ wheel==0.36.2
 flake8==3.5.0
 tox==3.21.4
 coverage==5.4
-Sphinx==3.5.0
+Sphinx==3.5.1
 argparse==1.4.0
 pytest==6.2.2
 docutils==0.16
