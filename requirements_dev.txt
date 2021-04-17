@@ -6,6 +6,6 @@ coverage==5.5
 Sphinx==3.5.4
 argparse==1.4.0
 pytest==6.2.3
-docutils==0.17
+docutils==0.17.1
 requests>=2.22.0
 
